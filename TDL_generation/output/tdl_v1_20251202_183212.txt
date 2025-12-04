@@ -1,0 +1,67 @@
+# Generated TDL v1
+# Timestamp: 2025-12-02T18:32:12.367314
+# User Command: First, pick up the apple and put it down. Next pick up the banana
+# ============================================================
+
+GOAL Initialize_Process()
+{
+    // Set default tool, velocity, and acceleration
+    SPAWN SetTool(0) WITH WAIT;
+    SPAWN SetJointVelocity(50) WITH WAIT;
+    SPAWN SetJointAcceleration(50) WITH WAIT;
+    SPAWN SetTaskVelocity(100) WITH WAIT;
+    SPAWN SetTaskAcceleration(100) WITH WAIT;
+
+    // Assume gripper is on digital output 1, start with it open
+    SPAWN SetDigitalOutput(1, 0) WITH WAIT;
+}
+
+GOAL Execute_Process()
+{
+    // == Pick and Place Apple ==
+    SPAWN PrintLog("Starting apple pick and place routine") WITH WAIT;
+    SPAWN SetWorkpieceWeight(0.2, Trans(0, 0, 100, 0, 0, 0)) WITH WAIT;
+
+    // Move to a safe position above the apple
+    SPAWN MoveLinear(PosX(300, 100, 200, 0, 180, 0), 50, 50, 0, 0.0, None) WITH WAIT;
+    // Move down to the apple
+    SPAWN MoveLinear(PosX(300, 100, 150, 0, 180, 0), 20, 50, 0, 0.0, None) WITH WAIT;
+    // Close gripper (DO 1 = ON)
+    SPAWN SetDigitalOutput(1, 1) WITH WAIT;
+    SPAWN Delay(1) WITH WAIT;
+    // Lift the apple
+    SPAWN MoveLinear(PosX(300, 100, 200, 0, 180, 0), 20, 50, 0, 0.0, None) WITH WAIT;
+
+    // Move to a safe position above the drop-off location
+    SPAWN MoveLinear(PosX(300, -100, 200, 0, 180, 0), 50, 50, 0, 0.0, None) WITH WAIT;
+    // Move down to the drop-off location
+    SPAWN MoveLinear(PosX(300, -100, 150, 0, 180, 0), 20, 50, 0, 0.0, None) WITH WAIT;
+    // Open gripper (DO 1 = OFF)
+    SPAWN SetDigitalOutput(1, 0) WITH WAIT;
+    SPAWN Delay(1) WITH WAIT;
+    // Move away from the apple
+    SPAWN MoveLinear(PosX(300, -100, 200, 0, 180, 0), 20, 50, 0, 0.0, None) WITH WAIT;
+
+    // == Pick up Banana ==
+    SPAWN PrintLog("Starting banana pick up routine") WITH WAIT;
+    SPAWN SetWorkpieceWeight(0.12, Trans(0, 0, 100, 0, 0, 0)) WITH WAIT;
+
+    // Move to a safe position above the banana
+    SPAWN MoveLinear(PosX(400, 100, 200, 0, 180, 0), 50, 50, 0, 0.0, None) WITH WAIT;
+    // Move down to the banana
+    SPAWN MoveLinear(PosX(400, 100, 150, 0, 180, 0), 20, 50, 0, 0.0, None) WITH WAIT;
+    // Close gripper (DO 1 = ON)
+    SPAWN SetDigitalOutput(1, 1) WITH WAIT;
+    SPAWN Delay(1) WITH WAIT;
+    // Lift the banana
+    SPAWN MoveLinear(PosX(400, 100, 200, 0, 180, 0), 20, 50, 0, 0.0, None) WITH WAIT;
+}
+
+GOAL Finalize_Process()
+{
+    // Move to a safe home position
+    SPAWN PrintLog("Task complete. Moving to home position.") WITH WAIT;
+    SPAWN MoveJoint(PosJ(0, 0, 0, 0, 0, 0), 50, 50, 0, 0.0, None) WITH WAIT;
+    // Ensure gripper is open
+    SPAWN SetDigitalOutput(1, 0) WITH WAIT;
+}

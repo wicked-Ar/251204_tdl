@@ -1,0 +1,56 @@
+# Generated TDL v1
+# Timestamp: 2025-12-03T09:51:06.768828
+# User Command: First, pick up the apple and put it down. Next pick up the banana
+# ============================================================
+
+GOAL Initialize_Process()
+{
+    SPAWN SetTool(0) WITH WAIT;
+    SPAWN SetJointVelocity(50) WITH WAIT;
+    SPAWN SetJointAcceleration(50) WITH WAIT;
+}
+
+GOAL Execute_Process()
+{
+    // Set payload for the apple
+    SPAWN SetWorkpieceWeight(0.2, Trans(0, 0, 50, 0, 0, 0)) WITH WAIT;
+
+    // Move to approach position for the apple
+    SPAWN MoveLinear(PosX(400, 0, 200, 0, 180, 0), 50, 50, 0, 0.0, None) WITH WAIT;
+    // Move down to pick the apple
+    SPAWN MoveLinear(PosX(400, 0, 100, 0, 180, 0), 25, 50, 0, 0.0, None) WITH WAIT;
+    // Close gripper (assuming DO port 1 controls the gripper)
+    SPAWN SetDigitalOutput(1, 1) WITH WAIT;
+    SPAWN Delay(0.5) WITH WAIT;
+    // Move up with the apple
+    SPAWN MoveLinear(PosX(400, 0, 200, 0, 180, 0), 25, 50, 0, 0.0, None) WITH WAIT;
+
+    // Move to approach position for put down
+    SPAWN MoveLinear(PosX(400, 200, 200, 0, 180, 0), 50, 50, 0, 0.0, None) WITH WAIT;
+    // Move down to place the apple
+    SPAWN MoveLinear(PosX(400, 200, 100, 0, 180, 0), 25, 50, 0, 0.0, None) WITH WAIT;
+    // Open gripper
+    SPAWN SetDigitalOutput(1, 0) WITH WAIT;
+    SPAWN Delay(0.5) WITH WAIT;
+    // Move up after placing the apple
+    SPAWN MoveLinear(PosX(400, 200, 200, 0, 180, 0), 25, 50, 0, 0.0, None) WITH WAIT;
+
+    // Set payload for the banana
+    SPAWN SetWorkpieceWeight(0.12, Trans(0, 0, 60, 0, 0, 0)) WITH WAIT;
+
+    // Move to approach position for the banana
+    SPAWN MoveLinear(PosX(400, -200, 200, 0, 180, 0), 50, 50, 0, 0.0, None) WITH WAIT;
+    // Move down to pick the banana
+    SPAWN MoveLinear(PosX(400, -200, 100, 0, 180, 0), 25, 50, 0, 0.0, None) WITH WAIT;
+    // Close gripper
+    SPAWN SetDigitalOutput(1, 1) WITH WAIT;
+    SPAWN Delay(0.5) WITH WAIT;
+    // Move up with the banana
+    SPAWN MoveLinear(PosX(400, -200, 200, 0, 180, 0), 25, 50, 0, 0.0, None) WITH WAIT;
+}
+
+GOAL Finalize_Process()
+{
+    // Go to home position
+    SPAWN MoveJoint(PosJ(0, 0, 0, 0, 0, 0), 50, 50, 0, 0.0, None) WITH WAIT;
+}

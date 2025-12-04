@@ -1,0 +1,51 @@
+# Generated TDL v1
+# Timestamp: 2025-12-02T18:02:28.585712
+# User Command: Pick the apple and move it to side
+# ============================================================
+
+GOAL Initialize_Process()
+{
+    SPAWN SetTool(0) WITH WAIT;
+    SPAWN SetWorkpieceWeight(0.2, Trans(0, 0, 50, 0, 0, 0)) WITH WAIT;
+    SPAWN SetJointVelocity(50) WITH WAIT;
+    SPAWN SetJointAcceleration(50) WITH WAIT;
+    SPAWN SetTaskVelocity(250) WITH WAIT;
+    SPAWN SetTaskAcceleration(1250) WITH WAIT;
+    // Open gripper at start
+    SPAWN SetDigitalOutput(0, 0) WITH WAIT;
+}
+
+GOAL Execute_Process()
+{
+    // Define positions
+    SPAWN Assign(pickup_approach, PosX(400, 0, 300, 0, 180, 0)) WITH WAIT;
+    SPAWN Assign(pickup_pos, PosX(400, 0, 200, 0, 180, 0)) WITH WAIT;
+    SPAWN Assign(place_approach, PosX(400, 250, 300, 0, 180, 0)) WITH WAIT;
+    SPAWN Assign(place_pos, PosX(400, 250, 200, 0, 180, 0)) WITH WAIT;
+
+    // Move to pickup approach position
+    SPAWN MoveLinear(pickup_approach, 50, 50, 0, 0.0, None) WITH WAIT;
+    // Move down to pick the apple
+    SPAWN MoveLinear(pickup_pos, 25, 25, 0, 0.0, None) WITH WAIT;
+    // Close gripper
+    SPAWN SetDigitalOutput(0, 1) WITH WAIT;
+    SPAWN Delay(0.5) WITH WAIT;
+    // Move up from pickup position
+    SPAWN MoveLinear(pickup_approach, 25, 25, 0, 0.0, None) WITH WAIT;
+
+    // Move to place approach position
+    SPAWN MoveLinear(place_approach, 50, 50, 0, 0.0, None) WITH WAIT;
+    // Move down to place the apple
+    SPAWN MoveLinear(place_pos, 25, 25, 0, 0.0, None) WITH WAIT;
+    // Open gripper
+    SPAWN SetDigitalOutput(0, 0) WITH WAIT;
+    SPAWN Delay(0.5) WITH WAIT;
+    // Move up from place position
+    SPAWN MoveLinear(place_approach, 25, 25, 0, 0.0, None) WITH WAIT;
+}
+
+GOAL Finalize_Process()
+{
+    // Move to home position
+    SPAWN MoveJoint(PosJ(0, 0, 0, 0, 0, 0), 50, 50, 0, 0.0, None) WITH WAIT;
+}

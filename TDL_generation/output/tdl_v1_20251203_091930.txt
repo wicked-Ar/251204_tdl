@@ -1,0 +1,62 @@
+# Generated TDL v1
+# Timestamp: 2025-12-03T09:19:30.689788
+# User Command: First, pick up the apple and put it down. Next pick up the banana
+# ============================================================
+
+GOAL Initialize_Process()
+{
+    SPAWN SetTool(0) WITH WAIT;
+    SPAWN SetWorkpieceWeight(0.2, Trans(0, 0, 50, 0, 0, 0)) WITH WAIT;
+    SPAWN SetJointVelocity(50) WITH WAIT;
+    SPAWN SetJointAcceleration(50) WITH WAIT;
+    SPAWN SetTaskVelocity(250) WITH WAIT;
+    SPAWN SetTaskAcceleration(1200) WITH WAIT;
+    SPAWN SetDigitalOutput(1, 0) WITH WAIT; // Ensure gripper is open initially
+}
+
+GOAL Execute_Process()
+{
+    // Define poses for the apple pick and place
+    SPAWN Assign(apple_pickup_approach, PosX(400, 200, 200, 0, 180, 0)) WITH WAIT;
+    SPAWN Assign(apple_pickup, PosX(400, 200, 100, 0, 180, 0)) WITH WAIT;
+    SPAWN Assign(apple_place_approach, PosX(400, -200, 200, 0, 180, 0)) WITH WAIT;
+    SPAWN Assign(apple_place, PosX(400, -200, 100, 0, 180, 0)) WITH WAIT;
+
+    // --- Pick up the apple ---
+    SPAWN PrintLog("Moving to pick up the apple") WITH WAIT;
+    SPAWN MoveJoint(apple_pickup_approach, 80, 80, 0, 0.0, None) WITH WAIT;
+    SPAWN MoveLinear(apple_pickup, 40, 40, 0, 0.0, None) WITH WAIT;
+    SPAWN SetDigitalOutput(1, 1) WITH WAIT; // Close gripper
+    SPAWN Delay(0.5) WITH WAIT;
+    SPAWN MoveLinear(apple_pickup_approach, 40, 40, 0, 0.0, None) WITH WAIT;
+
+    // --- Place the apple ---
+    SPAWN PrintLog("Moving to place the apple") WITH WAIT;
+    SPAWN MoveJoint(apple_place_approach, 80, 80, 0, 0.0, None) WITH WAIT;
+    SPAWN MoveLinear(apple_place, 40, 40, 0, 0.0, None) WITH WAIT;
+    SPAWN SetDigitalOutput(1, 0) WITH WAIT; // Open gripper
+    SPAWN Delay(0.5) WITH WAIT;
+    SPAWN MoveLinear(apple_place_approach, 40, 40, 0, 0.0, None) WITH WAIT;
+
+    // --- Pick up the banana ---
+    SPAWN PrintLog("Preparing to pick up the banana") WITH WAIT;
+    SPAWN SetWorkpieceWeight(0.12, Trans(0, 0, 60, 0, 0, 0)) WITH WAIT; // Update for banana
+
+    // Define poses for the banana pickup
+    SPAWN Assign(banana_pickup_approach, PosX(500, 200, 200, 0, 180, 0)) WITH WAIT;
+    SPAWN Assign(banana_pickup, PosX(500, 200, 100, 0, 180, 0)) WITH WAIT;
+
+    SPAWN MoveJoint(banana_pickup_approach, 80, 80, 0, 0.0, None) WITH WAIT;
+    SPAWN MoveLinear(banana_pickup, 40, 40, 0, 0.0, None) WITH WAIT;
+    SPAWN SetDigitalOutput(1, 1) WITH WAIT; // Close gripper
+    SPAWN Delay(0.5) WITH WAIT;
+    SPAWN MoveLinear(banana_pickup_approach, 40, 40, 0, 0.0, None) WITH WAIT;
+}
+
+GOAL Finalize_Process()
+{
+    SPAWN PrintLog("Task complete. Moving to home position.") WITH WAIT;
+    SPAWN SetDigitalOutput(1, 0) WITH WAIT; // Ensure gripper is open
+    SPAWN MoveJoint(PosJ(0, 0, 0, 0, 0, 0), 50, 50, 0, 0.0, None) WITH WAIT;
+    SPAWN End() WITH WAIT;
+}

@@ -1,0 +1,120 @@
+{
+  "panda": {
+    "robot_id": "panda",
+    "payload": 3.0,
+    "reach": 0.855,
+    "dof": 7,
+    "max_velocity": 2.175,
+    "max_acceleration": 15.0,
+    "manufacturer": "Franka Emika",
+    "description": "High-precision collaborative robot with 7 DoF",
+    "dynamics_profile": "Robot_B",
+    "pybullet_config": {
+      "urdf_available": true,
+      "urdf_path": "franka_panda/panda.urdf",
+      "base_position": [0.6, 0, 0.625],
+      "base_orientation": [0, 0, 3.14159],
+      "home_pose": [0, 0, 0, -1.5, 0, 1.8, 0.785, 0.04, 0.04],
+      "ee_link_index": 11,
+      "controllable_joints": 7,
+      "gripper_joints": [9, 10],
+      "joint_limits": {
+        "lower": [-2.8973, -1.7628, -2.8973, -3.0718, -2.8973, -0.0175, -2.8973],
+        "upper": [2.8973, 1.7628, 2.8973, -0.0698, 2.8973, 3.7525, 2.8973],
+        "ranges": [5.7946, 3.5256, 5.7946, 2.9020, 5.7946, 3.7700, 5.7946],
+        "rest_poses": [0, 0, 0, -1.5, 0, 1.8, 0.785]
+      }
+    }
+  },
+  "ur5e": {
+    "robot_id": "ur5e",
+    "payload": 5.0,
+    "reach": 0.85,
+    "dof": 6,
+    "max_velocity": 3.14,
+    "max_acceleration": 10.0,
+    "manufacturer": "Universal Robots",
+    "description": "Versatile collaborative robot with 6 DoF",
+    "dynamics_profile": "Robot_A",
+    "pybullet_config": {
+      "urdf_available": false,
+      "urdf_path": null,
+      "error_message": "UR5e URDF not available in PyBullet. Use kuka_iiwa14 as alternative."
+    }
+  },
+  "doosan_h2515": {
+    "robot_id": "doosan_h2515",
+    "payload": 25.0,
+    "reach": 1.5,
+    "dof": 6,
+    "max_velocity": 3.49,
+    "max_acceleration": 15.0,
+    "manufacturer": "Doosan Robotics",
+    "description": "Heavy-duty collaborative robot for industrial tasks",
+    "dynamics_profile": "Robot_A",
+    "pybullet_config": {
+      "urdf_available": false,
+      "urdf_path": null,
+      "error_message": "Doosan H2515 URDF not available in PyBullet. Use kuka_iiwa14 as alternative."
+    }
+  },
+  "doosan_m1013": {
+    "robot_id": "doosan_m1013",
+    "payload": 10.0,
+    "reach": 1.3,
+    "dof": 6,
+    "max_velocity": 4.01,
+    "max_acceleration": 12.0,
+    "manufacturer": "Doosan Robotics",
+    "description": "Medium-payload collaborative robot",
+    "dynamics_profile": "Robot_A",
+    "pybullet_config": {
+      "urdf_available": false,
+      "urdf_path": null,
+      "error_message": "Doosan M1013 URDF not available in PyBullet. Use kuka_iiwa14 as alternative."
+    }
+  },
+  "doosan_m0609": {
+    "robot_id": "doosan_m0609",
+    "payload": 6.0,
+    "reach": 0.9,
+    "dof": 6,
+    "max_velocity": 3.92,
+    "max_acceleration": 12.0,
+    "manufacturer": "Doosan Robotics",
+    "description": "Compact collaborative robot for smaller workspaces",
+    "dynamics_profile": "Robot_A",
+    "pybullet_config": {
+      "urdf_available": false,
+      "urdf_path": null,
+      "error_message": "Doosan M0609 URDF not available in PyBullet. Use panda or kuka_iiwa14 as alternative."
+    }
+  },
+  "kuka_iiwa14": {
+    "robot_id": "kuka_iiwa14",
+    "payload": 14.0,
+    "reach": 0.82,
+    "dof": 7,
+    "max_velocity": 1.71,
+    "max_acceleration": 8.5,
+    "manufacturer": "KUKA",
+    "description": "Sensitive collaborative robot with torque sensors",
+    "dynamics_profile": "Robot_A",
+    "pybullet_config": {
+      "urdf_available": true,
+      "urdf_path": "kuka_iiwa/model.urdf",
+      "base_position": [-0.6, 0, 0.625],
+      "base_orientation": [0, 0, 0],
+      "home_pose": [0, 0, 0, -1.57, 0, 1.57, 0],
+      "ee_link_index": 6,
+      "controllable_joints": 7,
+      "gripper_joints": [],
+      "joint_limits": {
+        "lower": [-2.96, -2.09, -2.96, -2.09, -2.96, -2.09, -3.05],
+        "upper": [2.96, 2.09, 2.96, 2.09, 2.96, 2.09, 3.05],
+        "ranges": [5.92, 4.18, 5.92, 4.18, 5.92, 4.18, 6.10],
+        "rest_poses": [0, 0, 0, -1.57, 0, 1.57, 0]
+      }
+    }
+  }
+}
